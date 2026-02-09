@@ -48,7 +48,11 @@
       color: var(--danger);
       margin: 20px 0 30px;
     }
-  
+
+    #message {
+      white-space: pre-line;
+    }
+
     .btn {
       display: inline-block;
       background: var(--primary);
@@ -75,7 +79,7 @@
 <body>
 
   <div class="container">
-    <h1 id="message">⏳ Chargement...</h1>
+    <h1 id="message"></h1>
     <div id="timer"></div>
 
     <button class="btn">Code couleur</button>
@@ -85,7 +89,13 @@
     const params = new URLSearchParams(window.location.search);
 
     const message = params.get("message") || 
-      "Le secteur de l’automobile est particulièrement émetteur de CO2. Les constructeurs automobiles sont ciblés prioritairement par les pouvoirs publics. En 2025, plusieurs clients constructeurs ont sollicité Céchola pour fournir l’impact carbone de ses produits (Analyse de Cycle de Vie).  Les collaborateurs insistent également pour calculer l’impact carbone de l’entreprise (Bilan Carbone).  Le responsable QSE est sollicité par la direction pour fournir ces informations. Vous devez répondre rapidement à sa sollicitation. ";
+    `Le secteur de l’automobile est particulièrement émetteur de CO2. Les constructeurs automobiles sont ciblés prioritairement par les pouvoirs publics.
+    En 2025, plusieurs clients constructeurs ont sollicité Céchola pour fournir l’impact carbone de ses produits (Analyse de Cycle de Vie). 
+
+    Les collaborateurs insistent également pour calculer l’impact carbone de l’entreprise (Bilan Carbone). 
+    
+    Le responsable QSE est sollicité par la direction pour fournir ces informations.
+    Vous devez répondre rapidement à sa sollicitation. `;
 
     const duration = parseInt(params.get("time")) || 600;
 
