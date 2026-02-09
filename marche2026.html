@@ -29,7 +29,7 @@
     const params = new URLSearchParams(window.location.search);
 
     const message = params.get("message") || "Le secteur de l’automobile est particulièrement émetteur de CO2. Les constructeurs automobiles sont ciblés prioritairement par les pouvoirs publics. En 2025, plusieurs clients constructeurs ont sollicité Céchola pour fournir l’impact carbone de ses produits.  Les collaborateurs insistent également pour calculer l’impact carbone de l’entreprise. ";
-    const duration = parseInt(params.get("time")) || 300; // secondes
+    const duration = parseInt(params.get("time")) || 600; // secondes
 
     document.getElementById("message").textContent = message;
 
