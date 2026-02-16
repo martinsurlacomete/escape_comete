@@ -73,7 +73,11 @@
 <div class="chat-container">
   <div class="messages" id="messages">
     <div class="bot message">
-      Commencez par me transmettre le mot correspondant à la zone d'impact.
+      Communiquez avec moi en m'envoyant des mots-clés. Les mots-clés qui peuvent être utilisés sont qui apparaissent en rouge, quand vous scannez les éléments de la carte. Envoyez-les moi à l'identique par message, au bon moment.
+      Pour combiner plusieurs mots, écrivez "mot1+mot2" (sans espaces).
+      Par exemple, une consigne comme "emmener les enfants à la plage" s'écrirait "enfants+plage".
+      
+      Commencez par me transmettre le mot correspondant à la zone vers laquelle nous devons dévier la comète.
     </div>
   </div>
 
@@ -93,15 +97,18 @@
   const scenario = [
     {
       options: [
-        { expected: ["eaux profondes"], response: "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici, mais elle créera une vague puissante qui inondera la ville." }
+        { expected: ["eaux profondes"], response: "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici." }
       ],
-      intermediate: ["Que pouvons-nous faire pour limiter l'impact ?"]
+      intermediate: ["Selon nos calculs, la chute de la comète en mer provoquera une vague puissante, qui devrait vous atteindre et inonder la ville. Il faut s'y préparer, vite !"]
     },
     {
       options: [
         { expected: ["digue + hélicoptère + emplacement"], response: "Ok, on va faire déplacer cette digue en hélico !" },
-        { expected: ["digue"], response: "Ok, une digue déplaçable, mais... vous n'avez pas de consignes supplémentaires ?" },
-        { expected: ["chauffeurs de bus"], response: "Bien vu, ils vont pouvoir gérer l'évacuation. Ils ne sont que 4... Que doivent-ils évacuer en priorité ? Communiquez-moi 4 éléments." }
+      ]
+    },
+    {
+      options: [
+        { expected: ["chauffeurs de bus"], response: "Bien vu, ils vont pouvoir gérer l'évacuation. Ils ne sont que 4... Que doivent-ils évacuer en priorité ? Communiquez-moi 4 éléments de votre choix." }
       ]
     },
     {
@@ -121,7 +128,8 @@
       options: [
         { expected: ["colline"], response: "C'est noté. La-bas, ils ne seront pas exposés." },
       ],
-      intermediate: ["Certains habitants n'ont pas réussi à rejoindre le point de ralliement. C'est le cas des nageurs, du personnel de la Tour, et des travailleurs de l'usine. Ils n'auront pas le temps d'évacuer, il faut les aider !"]
+      intermediate: ["Argh, il semblerait qu'installer la digue était une erreur... La vague a rebondi sur la digue et avance de plus en plus vite vers vous !"],
+      intermediate: ["Certains habitants n'ont pas réussi à rejoindre le point de ralliement. C'est le cas des nageurs, du personnel de la Tour, et des travailleurs de l'usine. Ils n'auront pas le temps d'évacuer... ils sont exposés à l'inondation qui arrive vite ! Aidez-les !"]
     },
     {
       options: [
@@ -131,8 +139,28 @@
     {
       options: [
         { expected: ["nageurs"], response: "Pas sûr que ce leur soit utile... Mais allons-y." },
-        { expected: ["tour"], response: "La hauteur de la tour devrait suffire, non ? Bref, je suis votre intuition." },
-        { expected: ["travailleurs"], response: "Oui, bonne idée, cela les rendra moins vulnérables." }
+        { expected: ["employés"], response: "La hauteur de la tour devrait suffire pour les protéger, non ?" },
+        { expected: ["travailleurs"], response: "J'envoie en urgence quelqu'un chercher les bouées !" }
+      ],
+      intermediate: ["La vague va bientôt passer... La majorité des habitants n'y sont pas exposés, et ceux qui restent y sont désormais beaucoup moins vulnérables, grâce aux bouées que vous leur avez fournies."],
+      intermediate: ["Bravo à tous."],
+      intermediate: ["Il reste malgré tout du travail. Que vont-faire les habitants désormais ? Où vont-ils loger ?"]
+    },
+    {
+      options: [
+        { expected: ["hôtels"], response: "Les hôtels de la colline sont une bonne solution temporaire, réquisitionnons-les." }
+      ],
+      intermediate: ["En attendant, je vous laisse trouver de quoi nourrir vos concitoyens."]
+    },
+    {
+      options: [
+        { expected: ["supermarché"], response: "Le supermarché est totalement inondé, toute la nourriture est perdue..." }
+      ],
+      intermediate: ["Trouvez une alternative temporaire pour approvisionner la ville en nourriture."]
+    },
+    {
+      options: [
+        { expected: ["supermarché voisin + cargo"], response: "Ca va coûter cher, mais a-t-on le choix ? Allons-y pour approvisionner la ville par bateau." }
       ]
     }
   ];
@@ -165,7 +193,7 @@
     messagesEl.appendChild(userMsg);
 
     if(step >= scenario.length) {
-      sendBotMessage("✅ Vous avez terminé le scénario !");
+      sendBotMessage("Bien joué ! Tout le monde est au chaud !");
       input.value = "";
       return;
     }
@@ -193,7 +221,7 @@
       } else if(collected.includes(text)) {
         sendBotMessage("❌ Vous avez déjà donné cette réponse.");
       } else {
-        sendBotMessage("❌ Ce choix n’est pas valide pour cette étape.");
+        sendBotMessage("❌ Je pense que ce n'est pas le bon choix.");
       }
     } else {
       if(match) {
@@ -206,7 +234,7 @@
       
         step++;
       } else {
-        sendBotMessage("❌ Ce n’est pas le bon moment pour cette décision.");
+        sendBotMessage("❌ A mon avis, ce n'est pas la bonne décision.");
       }
     }
 
