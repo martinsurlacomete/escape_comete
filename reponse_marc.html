@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Choix de décision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 1.4em;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .secondary {
+      background: #28a745;
+      color: white;
+    }
+
+    .neutral {
+      background: #6c757d;
+      color: white;
+    }
+
+    .back {
+      background: #ff9800;
+      color: white;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="menu">
+    <h1>Que décidez-vous de faire ?</h1>
+
+    <button class="primary" onclick="showResult('eviter')">
+      Éviter l’impact
+    </button>
+
+    <button class="secondary" onclick="showResult('deplacer')">
+      Déplacer les habitants
+    </button>
+
+    <button class="neutral" onclick="showResult('boulot')">
+      Je retourne au boulot
+    </button>
+  </div>
+
+  <div class="container" id="result" style="display:none;">
+    <p id="message"></p>
+    <button class="back" onclick="goBack()">Retour</button>
+  </div>
+
+  <script>
+    function showResult(choice) {
+      const message = document.getElementById("message");
+
+      if (choice === "eviter") {
+        message.textContent = "Vous choisissez d’éviter l’impact en modifiant la trajectoire.";
+      }
+
+      if (choice === "deplacer") {
+        message.textContent = "Vous décidez de déplacer les habitants pour limiter les conséquences.";
+      }
+
+      if (choice === "boulot") {
+        message.textContent = "Vous retournez au boulot en espérant que tout ira bien.";
+      }
+
+      document.getElementById("menu").style.display = "none";
+      document.getElementById("result").style.display = "block";
+    }
+
+    function goBack() {
+      document.getElementById("result").style.display = "none";
+      document.getElementById("menu").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
