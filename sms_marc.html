@@ -114,21 +114,25 @@
       ],
       multi: true,
       threshold: 4, // passe à l'étape suivante après 4 réponses correctes
-      intermediate: ["⚠️ Il reste quelques réponses à fournir pour valider cette étape."]
+      intermediate: ["C'est bon, les chauffeurs ont récupéré ce que vous souhaitiez. Ou doit-on les emmener pour qu'ils soient en sécurité ?"]
     },
     {
       options: [
-        { expected: ["colline"], response: "Que voulez-vous que je fasse avec ces bouées ?" },
-      ]
+        { expected: ["colline"], response: "C'est noté. La-bas, ils ne seront pas exposés." },
+      ],
+      intermediate: ["Les chauffeurs de bus me disent que certains n'ont pas réussi à rejoindre le point de ralliement. C'est le cas des nageurs, du personnel de la Tour, et des travailleurs de l'usine. Ils n'auront pas le temps d'évacuer, il faut les aider !"]
     },
     {
       options: [
-        { expected: ["bouées"], response: "Les bouées seront placées pour sécuriser la zone." },
-      ]
+        { expected: ["bouées"], response: "Que voulez-vous en faire ?" },
+      ],
+      intermediate: ["✅ Étape 1 complétée ! Préparons la digue et les chauffeurs."]
     },
     {
       options: [
-        { expected: ["usine"], response: "Bien vu, elles rendront le personnel moins vulnérable. J'envoie quelqu'un." },
+        { expected: ["nageurs"], response: "Pas sûr que ce leur soit utile... Mais allons-y." },
+        { expected: ["tour"], response: "La hauteur de la tour devrait suffire, non ? Bref, je suis votre intuition." },
+        { expected: ["travailleurs"], response: "Oui, bonne idée, cela les rendra moins vulnérables." }
       ]
     }
   ];
