@@ -72,7 +72,10 @@
 
   <div class="chat-container">
     <div class="messages" id="messages">
-      <div class="bot message">Communiquez moi les bons mots que vous trouverez en scannant les éléments de la carte (choisissez ceux en rouge). Vous pouvez cumuler plusieurs mots en écrivant comme ceci "essai + test". Commencez par me transmettre le mot correspondant à la zone d'impact. Marc.</div>
+      <div class="bot message">
+        Communiquez-moi les bons mots que vous trouverez en scannant les éléments de la carte (choisissez ceux en rouge). 
+        Commencez par me transmettre le mot correspondant à la zone d'impact.
+      </div>
     </div>
 
     <div class="input-container">
@@ -84,19 +87,23 @@
   <script>
     const messagesEl = document.getElementById("messages");
 
-    // Plusieurs mots de passe et réponses correspondantes
-    const passwords = {
-      "eaux profondes": "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici, mais elle créera une vague puissante qui inondera la ville. Communiquez-moi davantage d'instructions pour que l'on vous protège de cette submersion.",
-      "digue + hélicoptère + emplacement": "Ok, on va faire déplacer cette digue en hélico, ça devrait être rapide !",
-      "chauffeurs de bus": "Bien vu, mais ils ne sont que 3. Que doivent-ils prendre en priorité ?",
-      "enfants": "Oui, bien sûr, c'est vital : on prend les enfants en premier.",
-      "maison de retraite": "Les personnes agées sont très vulnérables, sauvons-les.",
-      "musée": "Ces éléments sont très précieux.",
-    };
+    // Scénario étape par étape
+    let step = 0;
+
+    const scenario = [
+      { expected: ["eaux profondes"], response: "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici, mais elle créera une vague puissante qui inondera la ville. Communiquez-moi davantage d'instructions pour que l'on vous protège de cette submersion." },
+      { expected: ["digue + hélicoptère + emplacement"], response: "Ok, on va faire déplacer cette digue en hélico, ça devrait être rapide !" },
+      { expected: ["chauffeurs de bus"], response: "Bien vu, mais ils ne sont que 3. Que doivent-ils prendre en priorité ?" },
+      { expected: ["enfants"], response: "Oui, bien sûr, c'est vital : on prend les enfants en premier." },
+      { expected: ["maison de retraite"], response: "Les personnes âgées sont très vulnérables, sauvons-les." },
+      { expected: ["musée"], response: "Ces éléments sont très précieux, on les prend." },
+      { expected: ["point de ralliement"], response: "Il y a beaucoup de personnes en route vers le point de ralliement. J'envoie un chauffeur." },
+      { expected: ["bite"], response: "Bah alors coquin, c'est pas le moment !" }
+    ];
 
     function sendMessage() {
       const input = document.getElementById("userInput");
-      const text = input.value.trim();
+      const text = input.value.trim().toLowerCase();
       if(text === "") return;
 
       // Message utilisateur
@@ -105,14 +112,15 @@
       userMsg.textContent = text;
       messagesEl.appendChild(userMsg);
 
-      // Réponse automatique
+      // Réponse bot
       const botMsg = document.createElement("div");
       botMsg.className = "message bot";
 
-      if(passwords[text]) {
-        botMsg.textContent = passwords[text]; // réponse correspondante
+      if(scenario[step] && scenario[step].expected.includes(text)) {
+        botMsg.textContent = scenario[step].response;
+        step++; // Passe à l'étape suivante
       } else {
-        botMsg.textContent = "❌ Je pense que c'est une mauvaise décision.";
+        botMsg.textContent = "❌ Ce n’est pas le bon moment pour cette décision.";
       }
 
       messagesEl.appendChild(botMsg);
