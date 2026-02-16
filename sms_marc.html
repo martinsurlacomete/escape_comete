@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Conversation SMS avec mots de passe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e5ddd5;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 95%;
+      max-width: 400px;
+      height: 80vh;
+      background: #fff;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      word-wrap: break-word;
+    }
+
+    .user { background: #dcf8c6; align-self: flex-end; }
+    .bot { background: #f1f0f0; align-self: flex-start; }
+
+    .input-container { display: flex; border-top: 1px solid #ccc; }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      background-color: #128c7e;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { background-color: #075e54; }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="messages" id="messages">
+      <div class="bot message">Vous pouvez communiquer avec moi ici. Marc.</div>
+    </div>
+
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Écrire un message...">
+      <button onclick="sendMessage()">Envoyer</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById("messages");
+
+    // Plusieurs mots de passe et réponses correspondantes
+    const passwords = {
+      "eaux profondes": "Ok, je retiens cette position.",
+      "abcd": "✅ Code secret reconnu ! Accès accordé.",
+      "motdepasse": "✅ Exact ! Vous êtes connecté.",
+    };
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if(text === "") return;
+
+      // Message utilisateur
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = text;
+      messagesEl.appendChild(userMsg);
+
+      // Réponse automatique
+      const botMsg = document.createElement("div");
+      botMsg.className = "message bot";
+
+      if(passwords[text]) {
+        botMsg.textContent = passwords[text]; // réponse correspondante
+      } else {
+        botMsg.textContent = "❌ Mot de passe incorrect. Réessaie.";
+      }
+
+      messagesEl.appendChild(botMsg);
+
+      // Scroll automatique
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      input.value = "";
+      input.focus();
+    }
+
+    // Envoi sur Enter
+    document.getElementById("userInput").addEventListener("keypress", function(e) {
+      if(e.key === "Enter") sendMessage();
+    });
+  </script>
+
+</body>
+</html>
