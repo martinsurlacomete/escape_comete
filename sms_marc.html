@@ -72,7 +72,7 @@
 
   <div class="chat-container">
     <div class="messages" id="messages">
-      <div class="bot message">Vous pouvez communiquer avec moi ici. Marc.</div>
+      <div class="bot message">Communiquez moi les bons mots que vous trouverez en scannant les éléments de la carte (choisissez ceux en rouge). Vous pouvez cumuler plusieurs mots en écrivant comme ceci "essai + test". Commencez par me transmettre le mot correspondant à la zone d'impact. Marc.</div>
     </div>
 
     <div class="input-container">
@@ -86,9 +86,12 @@
 
     // Plusieurs mots de passe et réponses correspondantes
     const passwords = {
-      "eaux profondes": "Ok, je retiens cette position.",
-      "abcd": "✅ Code secret reconnu ! Accès accordé.",
-      "motdepasse": "✅ Exact ! Vous êtes connecté.",
+      "eaux profondes": "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici, mais elle créera une vague puissante qui inondera la ville. Communiquez-moi davantage d'instructions pour que l'on vous protège de cette submersion.",
+      "digue + hélicoptère + emplacement": "Ok, on va faire déplacer cette digue en hélico, ça devrait être rapide !",
+      "chauffeurs de bus": "Bien vu, mais ils ne sont que 3. Que doivent-ils prendre en priorité ?",
+      "enfants": "Oui, bien sûr, c'est vital : on prend les enfants en premier.",
+      "maison de retraite": "Les personnes agées sont très vulnérables, sauvons-les.",
+      "musée": "Ces éléments sont très précieux.",
     };
 
     function sendMessage() {
@@ -109,7 +112,7 @@
       if(passwords[text]) {
         botMsg.textContent = passwords[text]; // réponse correspondante
       } else {
-        botMsg.textContent = "❌ Mot de passe incorrect. Réessaie.";
+        botMsg.textContent = "❌ Je pense que c'est une mauvaise décision.";
       }
 
       messagesEl.appendChild(botMsg);
