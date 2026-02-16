@@ -73,7 +73,6 @@
 <div class="chat-container">
   <div class="messages" id="messages">
     <div class="bot message">
-      Communiquez-moi les bons mots que vous trouverez en scannant les éléments de la carte (choisissez ceux en rouge). 
       Commencez par me transmettre le mot correspondant à la zone d'impact.
     </div>
   </div>
@@ -87,36 +86,31 @@
 <script>
   const messagesEl = document.getElementById("messages");
 
-  // Scénario par étapes, chaque étape peut avoir plusieurs réponses possibles
+  // Scénario par étapes
   let step = 0;
+
+  // Stocke les réponses déjà fournies pour l'étape multi
+  let collected = [];
 
   const scenario = [
     {
+      // Étape normale
       options: [
-        { expected: ["eaux profondes"], response: "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici, mais elle créera une vague puissante qui inondera la ville. Communiquez-moi davantage d'instructions pour que l'on vous protège de cette submersion." }
+        { expected: ["eaux profondes"], response: "C'est le meilleur endroit, je suis d'accord avec vous. La comète va être déviée ici, mais elle créera une vague puissante qui inondera la ville." }
       ]
     },
     {
+      // Étape multi : il faut entrer les deux réponses pour passer
       options: [
-        { expected: ["digue + hélicoptère + emplacement"], response: "Ok, on va faire déplacer cette digue en hélico, ça devrait être rapide !" },
+        { expected: ["digue + hélicoptère + emplacement"], response: "Ok, on va faire déplacer cette digue en hélico !" },
         { expected: ["chauffeurs de bus"], response: "Bien vu, mais ils ne sont que 3. Que doivent-ils prendre en priorité ?" }
-      ]
+      ],
+      multi: true // indique que toutes les réponses doivent être collectées
     },
     {
       options: [
         { expected: ["enfants"], response: "Oui, bien sûr, c'est vital : on prend les enfants en premier." },
         { expected: ["maison de retraite"], response: "Les personnes âgées sont très vulnérables, sauvons-les." }
-      ]
-    },
-    {
-      options: [
-        { expected: ["musée"], response: "Ces éléments sont très précieux, on les prend." },
-        { expected: ["point de ralliement"], response: "Il y a beaucoup de personnes en route vers le point de ralliement. J'envoie un chauffeur." }
-      ]
-    },
-    {
-      options: [
-        { expected: ["bite"], response: "Bah alors coquin, c'est pas le moment !" }
       ]
     }
   ];
@@ -126,25 +120,42 @@
     const text = input.value.trim().toLowerCase();
     if(text === "") return;
 
-    // Message utilisateur
     const userMsg = document.createElement("div");
     userMsg.className = "message user";
     userMsg.textContent = text;
     messagesEl.appendChild(userMsg);
 
-    // Réponse bot
     const botMsg = document.createElement("div");
     botMsg.className = "message bot";
 
     if(step < scenario.length) {
-      const options = scenario[step].options;
-      const match = options.find(opt => opt.expected.includes(text));
+      const currentStep = scenario[step];
+      const match = currentStep.options.find(opt => opt.expected.includes(text));
 
-      if(match) {
-        botMsg.textContent = match.response;
-        step++; // passe à l'étape suivante
+      if(currentStep.multi) {
+        // Étape multi : collecter toutes les réponses
+        if(match && !collected.includes(text)) {
+          collected.push(text);
+          botMsg.textContent = match.response;
+
+          // Si toutes les réponses de l'étape ont été données → passer à la prochaine étape
+          if(collected.length === currentStep.options.length) {
+            collected = [];
+            step++;
+          }
+        } else if(collected.includes(text)) {
+          botMsg.textContent = "❌ Vous avez déjà donné cette réponse.";
+        } else {
+          botMsg.textContent = "❌ Ce choix n’est pas valide pour cette étape.";
+        }
       } else {
-        botMsg.textContent = "❌ Ce n’est pas le bon moment pour cette décision.";
+        // Étape normale
+        if(match) {
+          botMsg.textContent = match.response;
+          step++;
+        } else {
+          botMsg.textContent = "❌ Ce n’est pas le bon moment pour cette décision.";
+        }
       }
     } else {
       botMsg.textContent = "✅ Vous avez terminé le scénario !";
@@ -157,7 +168,6 @@
     input.focus();
   }
 
-  // Envoi sur Enter
   document.getElementById("userInput").addEventListener("keypress", function(e) {
     if(e.key === "Enter") sendMessage();
   });
